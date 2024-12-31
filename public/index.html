@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Web Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Web Assistant</h1>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Ready</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="input-section">
+                <textarea id="taskInput" placeholder="Describe your task here..."></textarea>
+                <button id="startTask" class="primary-button">Start Task</button>
+                <button id="stopTask" class="secondary-button" disabled>Stop Task</button>
+            </div>
+
+            <div class="task-info">
+                <div class="plan-section">
+                    <h3>Task Plan</h3>
+                    <div id="planContent" class="content-box"></div>
+                </div>
+
+                <div class="current-action">
+                    <h3>Current Action</h3>
+                    <div id="actionContent" class="content-box"></div>
+                </div>
+            </div>
+
+            <div class="screenshot-section">
+                <h3>Current View</h3>
+                <div class="screenshot-container">
+                    <img id="screenshot" src="" alt="Current page view">
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h3>Result</h3>
+                <div id="resultContent" class="content-box"></div>
+            </div>
+        </div>
+
+        <div id="notifications"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        taskInput.value = loadCookies();
+    });
+    taskInput.addEventListener("input", function() {
+        saveCookies(taskInput.value);
+    });
+    taskInput.addEventListener("change", function() {
+        saveCookies(taskInput.value);
+    });
+    function saveCookies(value){
+        document.cookie = "taskInput=" + value;
+    }
+    function loadCookies(){
+        return document.cookie.split("; ").find(row => row.startsWith("taskInput="))?.split("=")[1];
+    }
+</script>
+</html> 

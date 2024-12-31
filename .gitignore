@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Browser data
+browser_data/
+
+# Task logs
+task_logs/
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/ 
+start.bat
