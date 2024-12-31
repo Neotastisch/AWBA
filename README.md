@@ -1,4 +1,4 @@
-# AI Web Assistant
+# AWBA: Autonomous Web Browsing Assistant
 
 ## This is a work in progress, but should be functional.
 
