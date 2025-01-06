@@ -11,13 +11,27 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-// Initialize OpenAI client
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: process.env.OPENROUTER_API_KEY,
+  })
 
-// Use GPT-4-Vision for better visual understanding
-const model = "gpt-4o";
+const model = "anthropic/claude-3.5-sonnet";
+
+/*
+Tested Models:
+- claude 3.5 sonnet - Best total so far, slightly better than gpt-4o. Has problems with large context.
+- openai/o1-mini - Best responses so far, but slow and expensive.
+
+- gpt-4o - Good enough, but struggles with visual tasks
+- deepseek/deepseek-chat - Good responses, but not as good
+- anthracite-org/magnum-v4-72b - Not good enough, doesnt understand the context
+- qwen/qvq-72b-preview - Struggles with context and visual tasks
+- perplexity/llama-3.1-sonar-small-128k-online - Responses not in the correct format.
+- cohere/command-r - Better then other cohere models, but unlogical and repeat itself sometimes.
+- cohere/command-r7b-12-2024 - Looked promising at first, but repeated itself. may need to try again in the future.
+- cohere/command-r-plus-08-2024 - Same as above.
+*/
 
 let AIData = {
     userEmail: process.env.USER_EMAIL,
@@ -106,6 +120,7 @@ function sendToClient(data) {
 let systemPrompt_initial = `
 You are an AI that can help the user with all kinds of tasks for browsing the web.
 You are the initial AI that will open the initial web page for further interaction.
+If the user asks you to do something, respond with the JSON always.
 
 Use the following URLS:
 - direct link to the website if avalible. Start with the main page. No need to skip ahead.
@@ -182,7 +197,7 @@ You will receive the following JSON structure:
    - If a loading screen or delay is detected, include a wait time in your next action.  
 
 ### Output Format:
-Always return your response in the following JSON structure:  
+Always return your response in the following JSON structure, under no circumstances return anything else:  
 
 {
     "action": "", // The action to perform: "click", "type", "clickOnText", "enter", "changeURL", "back", or "wait" or "scroll" or "requestInput".
@@ -467,7 +482,7 @@ async function completeAIStep(query, logFilePath){
         const requiredFields = ['action', 'element', 'value', 'finished', 'description'];
         for (const field of requiredFields) {
             if (!(field in parsedResponse)) {
-                throw new Error(`Missing required field: ${field}`);
+                parsedResponse[field] = "";
             }
         }
 

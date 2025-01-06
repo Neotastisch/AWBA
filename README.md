@@ -19,7 +19,7 @@ An intelligent web automation assistant powered by OpenAI's GPT-4 Vision and Pup
 
 - Node.js (Latest LTS version recommended)
 - NPM or Yarn
-- OpenAI API Key
+- OpenRouter API Key
 
 ## Installation
 
@@ -32,7 +32,7 @@ npm install
 
 3. Create a `.env` file in the root directory:
 ```env
-OPENAI_API_KEY=your_api_key_here
+OPENROUTER_API_KEY=your_api_key_here
 USER_EMAIL=your_email@example.com
 USER_NAME=Your Name
 USER_LOCATION=Your Location
