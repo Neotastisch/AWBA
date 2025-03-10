@@ -16,7 +16,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
   })
 
-const model = "anthropic/claude-3.5-sonnet";
+const model = "anthropic/claude-3.7-sonnet";
 
 /*
 Tested Models:
